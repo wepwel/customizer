@@ -122,7 +122,7 @@ window.addEventListener('message', function(event) {
 });
 
 // ✅ Simulate postMessage for local testing (optional)
-window.addEventListener('DOMContentLoaded', () => {
+/*window.addEventListener('DOMContentLoaded', () => {
   const fakeMessage = {
     backgroundImage: "https://static.wixstatic.com/media/a0452a_1234567890abcdef~mv2.webp",
     designs: [
@@ -145,4 +145,4 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log("⚙️ Simulating postMessage from Wix...");
     window.postMessage(fakeMessage, "*");
   }, 500);
-});
+});*/

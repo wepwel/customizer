@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Custom Mug Designer</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div id="container">
+    <canvas id="mugCanvas" width="815" height="300"></canvas>
+
+    <div class="section">
+      <h3>Select a Background Image:</h3>
+      <div class="image-options" id="image-options"></div>
+    </div>
+
+    <div class="section">
+      <h3>Enter Your Name:</h3>
+      <input type="text" id="nameInput" placeholder="Your name here" />
+      <select id="fontSelector">
+        <option value="Arial">Arial</option>
+        <option value="Georgia">Georgia</option>
+        <option value="Comic Sans MS">Comic Sans MS</option>
+        <option value="Courier New">Courier New</option>
+        <option value="Times New Roman">Times New Roman</option>
+      </select>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

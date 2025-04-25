@@ -105,7 +105,7 @@ window.addEventListener('message', function(event) {
 });
 
 // Simulate Wix postMessage for local testing
-/*window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   const fakeMessage = [
     {
       _id: "pD1",
@@ -119,4 +119,4 @@ window.addEventListener('message', function(event) {
     console.log("⚙️ Simulating postMessage from Wix...");
     window.postMessage(fakeMessage, "*");
   }, 500);
-});*/
+});

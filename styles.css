@@ -50,4 +50,18 @@ html, body {
   .image-options img.selected {
     border-color: blue;
   }
+
+  .right-aligned {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end; 
+    text-align: right;
+    margin-right: 0; 
+  }
+  
+  .input-row {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+  }
   

@@ -13,16 +13,11 @@ html, body {
   #container {
     text-align: center;
     max-width: 815px;
-    padding: 20px;
-    background: white;
-    box-shadow: 0 0 20px rgba(0,0,0,0.1);
-    border-radius: 12px;
+    background: rgba(249, 245, 241, 0.5);
   }
   
   #mugCanvas {
     display: block;
-    margin: 0 auto 20px;
-    border: 1px solid #ccc;
     width: 815px;
     height: 500px;
   }

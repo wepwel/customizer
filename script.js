@@ -1,33 +1,49 @@
 const canvas = new fabric.Canvas('mugCanvas');
 let backgroundImage = null;
+let designImage = null;
 let nameText = null;
 
-function loadBackgroundImage(url, nameX = 150, nameY = 200) {
-  console.log("🔄 Trying to load image:", url);
+// Load background (base image behind all designs)
+function loadBaseBackground(url) {
   fabric.Image.fromURL(url, function(img) {
-    if (!img) {
-      console.error("❌ Failed to load image:", url);
-      return;
-    }
     if (backgroundImage) {
       canvas.remove(backgroundImage);
     }
 
-    const scaleX = canvas.width / img.width;
-    const scaleY = canvas.height / img.height;
-    const scale = Math.min(scaleX, scaleY);
-    const scaledWidth = img.width * scale;
-    const scaledHeight = img.height * scale;
+    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
     img.set({
       scaleX: scale,
       scaleY: scale,
-      left: (canvas.width - scaledWidth) / 2,
-      top: (canvas.height - scaledHeight) / 2,
+      left: (canvas.width - img.width * scale) / 2,
+      top: (canvas.height - img.height * scale) / 2,
       selectable: false
     });
+
     backgroundImage = img;
     canvas.add(img);
     canvas.sendToBack(img);
+  }, { crossOrigin: 'anonymous' });
+}
+
+// Load design overlay + position text
+function loadDesignOverlay(url, nameX = 150, nameY = 200) {
+  fabric.Image.fromURL(url, function(img) {
+    if (designImage) {
+      canvas.remove(designImage);
+    }
+
+    const scale = Math.min(canvas.width / img.width, canvas.height / img.height);
+    img.set({
+      scaleX: scale,
+      scaleY: scale,
+      left: (canvas.width - img.width * scale) / 2,
+      top: (canvas.height - img.height * scale) / 2,
+      selectable: false
+    });
+
+    designImage = img;
+    canvas.add(img);
+    canvas.sendToBack(img); // keeps nameText on top
 
     if (nameText) {
       const safeNameX = Math.min(nameX, img.width);
@@ -40,6 +56,7 @@ function loadBackgroundImage(url, nameX = 150, nameY = 200) {
   }, { crossOrigin: 'anonymous' });
 }
 
+// Update text content and font
 function updateNameText(text, font) {
   if (nameText) {
     nameText.set({ text, fontFamily: font });
@@ -50,7 +67,7 @@ function updateNameText(text, font) {
       originX: 'center',
       originY: 'center',
       fontSize: 30,
-      fill: '#ff0000',
+      fill: '#000',
       fontFamily: font,
       selectable: true
     });
@@ -59,6 +76,7 @@ function updateNameText(text, font) {
   canvas.renderAll();
 }
 
+// Event listeners for input & font
 document.getElementById('nameInput').addEventListener('input', function(e) {
   const text = e.target.value;
   const font = document.getElementById('fontSelector').value;
@@ -71,49 +89,57 @@ document.getElementById('fontSelector').addEventListener('change', function(e) {
   updateNameText(text, font);
 });
 
-// Listen for messages (like from Wix)
+// Handle real Wix or simulated messages
 window.addEventListener('message', function(event) {
-  console.log("📬 Received message from:", event.origin);
-  console.log("📨 Received data:", JSON.stringify(event.data, null, 2));
-
   const data = event.data;
 
-  if (Array.isArray(data)) {
+  if (data.backgroundImage) {
+    loadBaseBackground(data.backgroundImage);
+  }
+
+  if (Array.isArray(data.designs)) {
     const imageContainer = document.getElementById('image-options');
     imageContainer.innerHTML = '';
 
-    data.forEach((item, index) => {
+    data.designs.forEach((item, index) => {
       const img = document.createElement('img');
       img.src = item.img;
-      img.dataset.image = item.img;
-      img.alt = `Background ${index}`;
+      img.alt = `Design ${index}`;
       img.addEventListener('click', () => {
         document.querySelectorAll('.image-options img').forEach(i => i.classList.remove('selected'));
         img.classList.add('selected');
-        const nameX = parseFloat(item.nameX || "150");
-        const nameY = parseFloat(item.nameY || "200");
-        loadBackgroundImage(item.img, nameX, nameY);
+        loadDesignOverlay(item.img, parseFloat(item.nameX), parseFloat(item.nameY));
       });
       imageContainer.appendChild(img);
     });
 
-    if (data.length > 0) {
-      const first = data[0];
-      loadBackgroundImage(first.img, parseFloat(first.nameX), parseFloat(first.nameY));
+    // Auto-load the first design
+    if (data.designs.length > 0) {
+      const first = data.designs[0];
+      loadDesignOverlay(first.img, parseFloat(first.nameX), parseFloat(first.nameY));
     }
   }
 });
 
-// Simulate Wix postMessage for local testing
+// ✅ Simulate postMessage for local testing (optional)
 window.addEventListener('DOMContentLoaded', () => {
-  const fakeMessage = [
-    {
-      _id: "pD1",
-      img: "https://static.wixstatic.com/media/a0452a_f33e912885e34c1c8e578acf556c55fe~mv2.webp",
-      nameX: "270",
-      nameY: "150"
-    }
-  ];
+  const fakeMessage = {
+    backgroundImage: "https://static.wixstatic.com/media/a0452a_1234567890abcdef~mv2.webp",
+    designs: [
+      {
+        _id: "d1",
+        img: "https://static.wixstatic.com/media/a0452a_a38a45364a4547bcbd18e7d97e003365~mv2.webp",
+        nameX: 270,
+        nameY: 150
+      },
+      {
+        _id: "d2",
+        img: "https://static.wixstatic.com/media/a0452a_91239df912d3f~mv2.webp",
+        nameX: 100,
+        nameY: 180
+      }
+    ]
+  };
 
   setTimeout(() => {
     console.log("⚙️ Simulating postMessage from Wix...");

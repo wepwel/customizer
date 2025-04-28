@@ -13,7 +13,6 @@ html, body {
 #container {
   width: 100%;
   max-width: 1200px;
-  padding: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -28,15 +27,8 @@ html, body {
   border: 2px dashed red;
 }
   
-  
   .section {
     margin: 20px auto;
-  }
-  
-  input, select, button {
-    padding: 10px;
-    font-size: 16px;
-    margin: 10px 5px;
   }
   
   .image-options {
@@ -58,23 +50,8 @@ html, body {
     border-color: blue;
   }
 
-  .right-aligned {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end; 
-    text-align: right;
-    margin-right: 0; 
-  }
-  
-  .input-row {
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-  }
-
   #sideMenu {
     position: fixed;
-    top: 20%;
     right: 0; /* 👈 Put it on the RIGHT side */
     width: 160px;
     background: #00263a; /* dark blue background */

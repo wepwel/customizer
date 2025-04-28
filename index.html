@@ -12,19 +12,41 @@
 <body>
   <div id="container">
 
-    <canvas id="mugCanvas"></canvas>
+    <div id="rowContainer">
 
-    <div id="sideMenu">
-      <button>Change Product / Color</button>
-      <button>Upload Image</button>
-      <button>Add Text</button>
-      <button>Choose Design</button>
-      <button>Change Printing Mode</button>
+      <canvas id="mugCanvas"></canvas>
+
+      <div id="sideMenu">
+        <button>Change Product / Color</button>
+        <button>Upload Image</button>
+        <button>Add Text</button>
+        <button>Choose Design</button>
+        <button>Change Printing Mode</button>
+        
+      </div>
+
     </div>
+    
 
     <div class="section">
       <h3>עיצוב על הספל</h3>
       <div class="image-options" id="image-options"></div>
+    </div>
+
+    
+
+    <div class="section right-aligned">
+      <h3>שם על הספל:</h3>
+      <div class="input-row">
+        <input type="text" id="nameInput" placeholder="Your name here" />
+        <select id="fontSelector">
+          <option value="Arial">Arial</option>
+          <option value="Georgia">Georgia</option>
+          <option value="Comic Sans MS">Comic Sans MS</option>
+          <option value="Courier New">Courier New</option>
+          <option value="Times New Roman">Times New Roman</option>
+        </select>
+      </div>
     </div>
 
   <script src="script.js"></script>

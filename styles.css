@@ -18,16 +18,14 @@ html, body {
     align-items: center;     
     box-sizing: border-box;
   }
-  
+
   #mugCanvas {
-    width: 800px;
-    height: 800px;
-    background:white; 
-    border: 2px dashed red;
     display: block;
     margin: 0 auto;
-    box-sizing: border-box;
-  }
+    border: 2px dashed red;
+    background: #eee;
+}
+  
   
   .section {
     margin: 20px auto;

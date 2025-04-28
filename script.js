@@ -1,59 +1,55 @@
+// Create Fabric canvas
 const canvas = new fabric.Canvas('mugCanvas');
 let backgroundImage = null;
-let designImage = null;
 let nameText = null;
 
-// Load the main mug background (800x800)
+// Load background image and resize canvas to match
 function loadBaseBackground(url) {
-    fabric.Image.fromURL(url, function(img) {
-      if (backgroundImage) {
-        canvas.remove(backgroundImage);
-      }
-  
-      img.set({
-        scaleX: 1,
-        scaleY: 1,
-        left: (canvas.width - img.width) / 2,
-        top: 0, // 👈 align to top instead of vertical center
-        selectable: false
-      });
-  
-      backgroundImage = img;
-      canvas.add(img);
-      canvas.sendToBack(img);
-    }, { crossOrigin: 'anonymous' });
-  }
+  fabric.Image.fromURL(url, function (img) {
+    if (!img) {
+      console.error("❌ Failed to load image:", url);
+      return;
+    }
 
-// Load design overlay on top of the mug background
-function loadDesignOverlay(url, nameX = 150, nameY = 200) {
-  fabric.Image.fromURL(url, function(img) {
-    if (designImage) {
-      canvas.remove(designImage);
+    const canvasEl = document.getElementById('mugCanvas');
+    const newWidth = img.width;
+    const newHeight = img.height;
+    console.log("newWidth", newWidth);
+    console.log("newHeight", newHeight);
+
+    // Update canvas element attributes and styles
+    canvasEl.width = newWidth;
+    canvasEl.height = newHeight;
+    canvasEl.style.width = newWidth + 'px';
+    canvasEl.style.height = newHeight + 'px';
+
+    // Resize Fabric canvas
+    canvas.setWidth(newWidth);
+    canvas.setHeight(newHeight);
+
+    // Remove previous background if any
+    if (backgroundImage) {
+      canvas.remove(backgroundImage);
     }
 
     img.set({
+      left: 0,
+      top: 0,
+      selectable: false,
       scaleX: 1,
       scaleY: 1,
-      left: (canvas.width - img.width) / 2,
-      top: (canvas.height - img.height) / 2,
-      selectable: false
     });
 
-    designImage = img;
+    backgroundImage = img;
     canvas.add(img);
     canvas.sendToBack(img);
+    canvas.renderAll();
 
-    if (nameText) {
-      nameText.set({
-        left: nameX,
-        top: nameY
-      });
-      canvas.renderAll();
-    }
+    console.log("✅ Canvas resized to: " + newWidth + "x" + newHeight);
   }, { crossOrigin: 'anonymous' });
 }
 
-// Update user name text
+// Update or add name text on canvas
 function updateNameText(text, font) {
   if (nameText) {
     nameText.set({ text, fontFamily: font });
@@ -73,28 +69,29 @@ function updateNameText(text, font) {
   canvas.renderAll();
 }
 
-// Input and font change listeners
-document.getElementById('nameInput').addEventListener('input', function(e) {
+// Handle text input and font change
+document.getElementById('nameInput').addEventListener('input', function (e) {
   const text = e.target.value;
   const font = document.getElementById('fontSelector').value;
   updateNameText(text, font);
 });
 
-document.getElementById('fontSelector').addEventListener('change', function(e) {
+document.getElementById('fontSelector').addEventListener('change', function (e) {
   const font = e.target.value;
   const text = document.getElementById('nameInput').value;
   updateNameText(text, font);
 });
 
-// Handle message from Wix (or simulation)
-window.addEventListener('message', function(event) {
+// Listen for postMessage from Wix or local
+window.addEventListener('message', function (event) {
+  console.log("📨 Received message from:", event.origin);
+  console.log("📦 Data received:", event.data);
+
   const data = event.data;
 
-  if (data.backgroundImage) {
+  if (data && data.backgroundImage && Array.isArray(data.designs)) {
     loadBaseBackground(data.backgroundImage);
-  }
 
-  if (Array.isArray(data.designs)) {
     const imageContainer = document.getElementById('image-options');
     imageContainer.innerHTML = '';
 
@@ -105,33 +102,40 @@ window.addEventListener('message', function(event) {
       img.addEventListener('click', () => {
         document.querySelectorAll('.image-options img').forEach(i => i.classList.remove('selected'));
         img.classList.add('selected');
-        loadDesignOverlay(item.img, parseFloat(item.nameX), parseFloat(item.nameY));
+
+        // Load clicked design image onto canvas
+        fabric.Image.fromURL(item.img, function (designImg) {
+          designImg.set({
+            left: (item.nameX || 0),
+            top: (item.nameY || 0),
+            scaleX: 1,
+            scaleY: 1,
+            selectable: true
+          });
+          canvas.add(designImg);
+          canvas.bringToFront(designImg);
+        }, { crossOrigin: 'anonymous' });
       });
+
       imageContainer.appendChild(img);
     });
-
-    // Auto-load first design
-    if (data.designs.length > 0) {
-      const first = data.designs[0];
-      loadDesignOverlay(first.img, first.nameX, first.nameY);
-    }
   }
 });
 
-// Simulate postMessage from Wix for local testing
-window.addEventListener('DOMContentLoaded', () => {
+// Simulate postMessage from Wix for local development
+/*window.addEventListener('DOMContentLoaded', () => {
   const fakeMessage = {
-    backgroundImage: "https://static.wixstatic.com/media/a0452a_1234567890abcdef~mv2.webp",
+    backgroundImage: "https://picsum.photos/800/800", // ✅ This URL always works
     designs: [
       {
         _id: "d1",
-        img: "https://static.wixstatic.com/media/a0452a_a38a45364a4547bcbd18e7d97e003365~mv2.webp",
+        img: "https://picsum.photos/seed/picsum/200/200",
         nameX: 270,
         nameY: 150
       },
       {
         _id: "d2",
-        img: "https://static.wixstatic.com/media/a0452a_91239df912d3f~mv2.webp",
+        img: "https://picsum.photos/seed/design2/200/200",
         nameX: 100,
         nameY: 180
       }
@@ -142,4 +146,4 @@ window.addEventListener('DOMContentLoaded', () => {
     console.log("⚙️ Simulating postMessage from Wix...");
     window.postMessage(fakeMessage, "*");
   }, 500);
-});
+});*/

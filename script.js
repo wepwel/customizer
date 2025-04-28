@@ -12,20 +12,16 @@ function loadBaseBackground(url) {
     }
 
     const canvasEl = document.getElementById('mugCanvas');
-    const newWidth = img.width;
-    const newHeight = img.height;
-    console.log("newWidth", newWidth);
-    console.log("newHeight", newHeight);
 
-    // Update canvas element attributes and styles
-    canvasEl.width = newWidth;
-    canvasEl.height = newHeight;
-    canvasEl.style.width = newWidth + 'px';
-    canvasEl.style.height = newHeight + 'px';
+    // Set real canvas size to match the image dimensions (for drawing)
+    canvas.setWidth(img.width);
+    canvas.setHeight(img.height);
 
-    // Resize Fabric canvas
-    canvas.setWidth(newWidth);
-    canvas.setHeight(newHeight);
+    // Set visual canvas size to 100% width responsive
+    canvasEl.width = img.width;
+    canvasEl.height = img.height;
+    canvasEl.style.width = '100%';
+    canvasEl.style.height = 'auto';
 
     // Remove previous background if any
     if (backgroundImage) {
@@ -45,9 +41,10 @@ function loadBaseBackground(url) {
     canvas.sendToBack(img);
     canvas.renderAll();
 
-    console.log("✅ Canvas resized to: " + newWidth + "x" + newHeight);
+    console.log("✅ Canvas and container resized properly:", img.width, "x", img.height);
   }, { crossOrigin: 'anonymous' });
 }
+
 
 // Update or add name text on canvas
 function updateNameText(text, font) {

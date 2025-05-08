@@ -14,34 +14,6 @@ function loadBaseBackground(url) {
   }, { crossOrigin: 'anonymous' });
 }
 
-function updateNameText(text, font) {
-  if (nameText) {
-    nameText.set({ text, fontFamily: font });
-  } else {
-    nameText = new fabric.Text(text, {
-      left: canvas.width / 2,
-      top: canvas.height / 2,
-      originX: 'center',
-      originY: 'center',
-      fontSize: 30,
-      fill: '#000',
-      fontFamily: font,
-      selectable: true
-    });
-    canvas.add(nameText);
-  }
-  canvas.renderAll();
-}
-
-document.getElementById('nameInput').addEventListener('input', (e) => {
-  const font = document.getElementById('fontSelector').value;
-  updateNameText(e.target.value, font);
-});
-
-document.getElementById('fontSelector').addEventListener('change', (e) => {
-  const text = document.getElementById('nameInput').value;
-  updateNameText(text, e.target.value);
-});
 
 window.addEventListener('message', function(event) {
   const data = event.data;

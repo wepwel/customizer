@@ -1,54 +1,60 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Custom Mug Designer</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
-  <link rel="stylesheet" href="styles.css" />
-</head>
-<body>
-  <div id="container">
-
-    <div id="rowContainer">
-
-      <canvas id="mugCanvas"></canvas>
-
-      <div id="sideMenu">
-        <button>Change Product / Color</button>
-        <button>Upload Image</button>
-        <button>Add Text</button>
-        <button>Choose Design</button>
-        <button>Change Printing Mode</button>
-        
+  <head>
+    <meta charset="UTF-8" />
+    <title>Custom Mug Designer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300..800&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/fabric.js/5.3.0/fabric.min.js"></script>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div id="container">
+      <div id="rowContainer">
+        <div id="canvasWrapper">
+          <canvas id="mugCanvas" width="800" height="600"></canvas>
+          <div id="featurePanel" class="feature-panel">
+            <div class="panel-header">
+              <span id="panelTitle">Panel</span>
+              <button onclick="closePanel()">×</button>
+            </div>
+            <div id="panelContent">Feature content here</div>
+          </div>
+        </div>
+      
+        <div id="sideMenu">
+          <button onclick="openPanel()">Change Product / Color</button>
+          <button>Upload Image</button>
+          <button>Add Text</button>
+          <button>Choose Design</button>
+          <button>Change Printing Mode</button>
+        </div>
       </div>
 
-    </div>
-    
+      <div class="section">
+        <h3>עיצוב על הספל</h3>
+        <div class="image-options" id="image-options"></div>
+      </div>
 
-    <div class="section">
-      <h3>עיצוב על הספל</h3>
-      <div class="image-options" id="image-options"></div>
-    </div>
-
-    
-
-    <div class="section right-aligned">
-      <h3>שם על הספל:</h3>
-      <div class="input-row">
-        <input type="text" id="nameInput" placeholder="Your name here" />
-        <select id="fontSelector">
-          <option value="Arial">Arial</option>
-          <option value="Georgia">Georgia</option>
-          <option value="Comic Sans MS">Comic Sans MS</option>
-          <option value="Courier New">Courier New</option>
-          <option value="Times New Roman">Times New Roman</option>
-        </select>
+      <div class="section right-aligned">
+        <h3>שם על הספל:</h3>
+        <div class="input-row">
+          <input type="text" id="nameInput" placeholder="Your name here" />
+          <select id="fontSelector">
+            <option value="Arial">Arial</option>
+            <option value="Georgia">Georgia</option>
+            <option value="Comic Sans MS">Comic Sans MS</option>
+            <option value="Courier New">Courier New</option>
+            <option value="Times New Roman">Times New Roman</option>
+          </select>
+        </div>
       </div>
     </div>
 
-  <script src="script.js"></script>
-</body>
+    <script src="script.js"></script>
+  </body>
 </html>

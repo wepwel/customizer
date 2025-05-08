@@ -1,86 +1,137 @@
-html, body {
+body {
   margin: 0;
   padding: 0;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
   font-family: "Open Sans", sans-serif;
-  background: #fff;
+  background: #f9f9f9;
 }
 
 #container {
-  width: 100%;
-  max-width: 1200px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  box-sizing: border-box;
+  background-color: red;
+}
+
+#rowContainer {
+  display: flex;
+  flex-direction: row;
+  gap: 20px;
+  justify-content: center; /* Optional: spaces items inside */
+  align-items: flex-start;
+  width: fit-content;       /* Shrinks to fit its content */
+  margin: 0 auto;           /* Centers the entire container horizontally */
+  height: 100vh;
+}
+
+#canvasWrapper {
+  position: relative;
 }
 
 #mugCanvas {
-  width: 100%;
-  height: auto;
-  background: #eee;
-  display: block;
-  border: 2px dashed red;
+  max-width: 100%;
+  border: 1px solid #ccc;
+  z-index: 1;
 }
-  
-  .section {
-    margin: 20px auto;
-  }
-  
-  .image-options {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
-  
-  .image-options img {
-    width: 80px;
-    height: auto;
-    cursor: pointer;
-    border: 2px solid transparent;
-    border-radius: 4px;
-  }
-  
-  .image-options img.selected {
-    border-color: blue;
-  }
 
-  #sideMenu {
-    right: 0; 
-    background: #00263a; /* dark blue background */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 20px 0;
-    gap: 20px;
-    border-radius: 10px 0 0 10px;
-    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
-    z-index: 1000; /* Make sure it is on top */
-  }
-  
-  #sideMenu button {
-    width: 100%;
-    background: none;
-    color: white;
-    border: none;
-    font-size: 14px;
-    text-align: center;
-    padding: 10px;
-    cursor: pointer;
-  }
-  
-  #sideMenu button:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-radius: 5px;
-  }
+#sideMenu {
+  width: 160px;
+  background: #00263a;
+  color: white;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.05);
+  z-index: 1;
+}
 
-  #rowContainer {
-    display: flex;
-    flex-direction: row;
-  }
-  
+#sideMenu button {
+  background: none;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 14px;
+  text-align: left;
+  cursor: pointer;
+}
+
+#sideMenu button:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.section {
+  margin-top: 30px;
+  width: 100%;
+  max-width: 800px;
+  text-align: center;
+}
+
+.image-options {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.image-options img {
+  width: 80px;
+  height: auto;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 5px;
+}
+
+.image-options img.selected {
+  border-color: blue;
+}
+
+.right-aligned {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin-top: 20px;
+}
+
+.input-row {
+  display: flex;
+  gap: 10px;
+}
+
+#featurePanel {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 300px;
+  height: 100%;
+  background: rgb(8, 47, 224);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transform: translateX(100%);
+  transition: transform 0.3s ease;
+  z-index: 2; /* Make sure it's above canvas */
+}
+
+#featurePanel.active {
+  transform: translateX(0);
+}
+
+.panel-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  color: white;
+  font-weight: bold;
+}
+
+.panel-header button {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}

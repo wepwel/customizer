@@ -1,52 +1,19 @@
-// Create Fabric canvas
 const canvas = new fabric.Canvas('mugCanvas');
 let backgroundImage = null;
 let nameText = null;
 
-// Load background image and resize canvas to match
 function loadBaseBackground(url) {
-  fabric.Image.fromURL(url, function (img) {
-    if (!img) {
-      console.error("❌ Failed to load image:", url);
-      return;
-    }
-
-    const canvasEl = document.getElementById('mugCanvas');
-
-    // Set real canvas size to match the image dimensions (for drawing)
-    canvas.setWidth(img.width);
-    canvas.setHeight(img.height);
-
-    // Set visual canvas size to 100% width responsive
-    canvasEl.width = img.width;
-    canvasEl.height = img.height;
-    canvasEl.style.width = '100%';
-    canvasEl.style.height = 'auto';
-
-    // Remove previous background if any
-    if (backgroundImage) {
-      canvas.remove(backgroundImage);
-    }
-
-    img.set({
-      left: 0,
-      top: 0,
-      selectable: false,
-      scaleX: 1,
-      scaleY: 1,
-    });
-
+  fabric.Image.fromURL(url, function(img) {
+    if (!img) return;
+    if (backgroundImage) canvas.remove(backgroundImage);
+    img.set({ left: 0, top: 0, selectable: false });
     backgroundImage = img;
     canvas.add(img);
     canvas.sendToBack(img);
     canvas.renderAll();
-
-    console.log("✅ Canvas and container resized properly:", img.width, "x", img.height);
   }, { crossOrigin: 'anonymous' });
 }
 
-
-// Update or add name text on canvas
 function updateNameText(text, font) {
   if (nameText) {
     nameText.set({ text, fontFamily: font });
@@ -66,26 +33,18 @@ function updateNameText(text, font) {
   canvas.renderAll();
 }
 
-// Handle text input and font change
-document.getElementById('nameInput').addEventListener('input', function (e) {
-  const text = e.target.value;
+document.getElementById('nameInput').addEventListener('input', (e) => {
   const font = document.getElementById('fontSelector').value;
-  updateNameText(text, font);
+  updateNameText(e.target.value, font);
 });
 
-document.getElementById('fontSelector').addEventListener('change', function (e) {
-  const font = e.target.value;
+document.getElementById('fontSelector').addEventListener('change', (e) => {
   const text = document.getElementById('nameInput').value;
-  updateNameText(text, font);
+  updateNameText(text, e.target.value);
 });
 
-// Listen for postMessage from Wix or local
-window.addEventListener('message', function (event) {
-  console.log("📨 Received message from:", event.origin);
-  console.log("📦 Data received:", event.data);
-
+window.addEventListener('message', function(event) {
   const data = event.data;
-
   if (data && data.backgroundImage && Array.isArray(data.designs)) {
     loadBaseBackground(data.backgroundImage);
 
@@ -100,13 +59,10 @@ window.addEventListener('message', function (event) {
         document.querySelectorAll('.image-options img').forEach(i => i.classList.remove('selected'));
         img.classList.add('selected');
 
-        // Load clicked design image onto canvas
-        fabric.Image.fromURL(item.img, function (designImg) {
+        fabric.Image.fromURL(item.img, function(designImg) {
           designImg.set({
-            left: (item.nameX || 0),
-            top: (item.nameY || 0),
-            scaleX: 1,
-            scaleY: 1,
+            left: item.nameX || 0,
+            top: item.nameY || 0,
             selectable: true
           });
           canvas.add(designImg);
@@ -119,28 +75,58 @@ window.addEventListener('message', function (event) {
   }
 });
 
-// Simulate postMessage from Wix for local development
-/*window.addEventListener('DOMContentLoaded', () => {
+function showPanel(title, contentHTML) {
+  const panel = document.getElementById('featurePanel');
+  document.getElementById('panelTitle').innerText = title;
+  document.getElementById('panelContent').innerHTML = contentHTML;
+
+  panel.style.display = 'flex';
+  panel.style.transform = 'translateX(0)';
+}
+
+function closePanel() {
+  const panel = document.getElementById('featurePanel');
+  panel.style.transform = 'translateX(100%)';
+  setTimeout(() => {
+    panel.style.display = 'none';
+  }, 300);
+}
+
+document.querySelector('#sideMenu button:nth-child(1)').addEventListener('click', () => {
+  showPanel("Change Product / Color", "<p>Color/product selector goes here.</p>");
+});
+
+document.querySelector('#sideMenu button:nth-child(2)').addEventListener('click', () => {
+  showPanel("Upload Image", '<input type="file" /><button>Upload</button>');
+});
+
+document.querySelector('#sideMenu button:nth-child(3)').addEventListener('click', () => {
+  showPanel("Add Text", '<input type="text" placeholder="Enter text" /><button>Add</button>');
+});
+
+document.querySelector('#sideMenu button:nth-child(4)').addEventListener('click', () => {
+  showPanel("Choose Design", "<p>Choose from predefined designs.</p>");
+});
+
+document.querySelector('#sideMenu button:nth-child(5)').addEventListener('click', () => {
+  showPanel("Change Printing Mode", "<p>Select print style or mockup.</p>");
+});
+
+
+window.addEventListener('DOMContentLoaded', () => {
   const fakeMessage = {
-    backgroundImage: "https://picsum.photos/800/800", // ✅ This URL always works
+    backgroundImage: "https://static.wixstatic.com/media/a0452a_f33e912885e34c1c8e578acf556c55fe~mv2.webp",
     designs: [
       {
         _id: "d1",
-        img: "https://picsum.photos/seed/picsum/200/200",
+        img: "https://static.wixstatic.com/media/a0452a_a38a45364a4547bcbd18e7d97e003365~mv2.webp",
         nameX: 270,
         nameY: 150
-      },
-      {
-        _id: "d2",
-        img: "https://picsum.photos/seed/design2/200/200",
-        nameX: 100,
-        nameY: 180
       }
     ]
   };
 
   setTimeout(() => {
-    console.log("⚙️ Simulating postMessage from Wix...");
     window.postMessage(fakeMessage, "*");
   }, 500);
-});*/
+});

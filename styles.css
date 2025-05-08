@@ -16,10 +16,10 @@ body {
   display: flex;
   flex-direction: row;
   gap: 20px;
-  justify-content: center; /* Optional: spaces items inside */
+  justify-content: center; 
   align-items: flex-start;
-  width: fit-content;       /* Shrinks to fit its content */
-  margin: 0 auto;           /* Centers the entire container horizontally */
+  width: fit-content;       
+  margin: 0 auto;           
   height: 100vh;
 }
 
@@ -29,7 +29,6 @@ body {
 
 #mugCanvas {
   max-width: 100%;
-  border: 1px solid #ccc;
   z-index: 1;
 }
 

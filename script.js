@@ -85,8 +85,7 @@ document.querySelector('#sideMenu button:nth-child(5)').addEventListener('click'
 });
 
 
-
-/*window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', () => {
   const fakeMessage = {
     backgroundImage: "https://static.wixstatic.com/media/a0452a_f33e912885e34c1c8e578acf556c55fe~mv2.webp",
     designs: [
@@ -102,4 +101,4 @@ document.querySelector('#sideMenu button:nth-child(5)').addEventListener('click'
   setTimeout(() => {
     window.postMessage(fakeMessage, "*");
   }, 500);
-});*/
+});

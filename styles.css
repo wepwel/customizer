@@ -7,11 +7,12 @@ body {
 
 #container {
   width: 800px;
+  height: 640px;
   display: flex;
   flex-direction: column;
   align-items: center;
   margin: 0 auto;
-  background-color: red;
+  background-color: #F9F5F1;
 }
 
 #rowContainer {
@@ -31,7 +32,7 @@ body {
 
 #mugCanvas {
   width: 640px;
-  height: 480px; 
+  height: 640px; 
 }
 
 #sideMenu {

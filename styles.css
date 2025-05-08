@@ -15,7 +15,6 @@ body {
 #rowContainer {
   display: flex;
   flex-direction: row;
-  gap: 20px;
   justify-content: center; 
   align-items: flex-start;
   width: fit-content;       
@@ -24,12 +23,14 @@ body {
 }
 
 #canvasWrapper {
+  width: 640px;
   position: relative;
 }
 
 #mugCanvas {
-  max-width: 100%;
-  z-index: 1;
+  width: 640px;
+  height: 480px; /* optional, or use height attribute */
+  border: 1px solid #ccc;
 }
 
 #sideMenu {

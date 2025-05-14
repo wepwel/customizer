@@ -2,6 +2,7 @@ const canvas = new fabric.Canvas('mugCanvas');
 let backgroundImage = null;
 let nameText = null;
 
+// Load background image onto canvas
 function loadBaseBackground(url) {
   fabric.Image.fromURL(url, function(img) {
     if (!img) return;
@@ -14,7 +15,7 @@ function loadBaseBackground(url) {
   }, { crossOrigin: 'anonymous' });
 }
 
-
+// Listen for incoming messages with background and design data
 window.addEventListener('message', function(event) {
   const data = event.data;
   if (data && data.backgroundImage && Array.isArray(data.designs)) {
@@ -47,23 +48,29 @@ window.addEventListener('message', function(event) {
   }
 });
 
+// Show the feature panel
 function showPanel(title, contentHTML) {
   const panel = document.getElementById('featurePanel');
+  const currentTitle = document.getElementById('panelTitle').innerText;
+
+  if (panel.classList.contains('active') && title === currentTitle) {
+    closePanel(); // Toggle off if same panel is open
+    return;
+  }
+
   document.getElementById('panelTitle').innerText = title;
   document.getElementById('panelContent').innerHTML = contentHTML;
 
-  panel.style.display = 'flex';
-  panel.style.transform = 'translateX(0)';
+  panel.classList.add('active');
 }
 
+// Hide the feature panel
 function closePanel() {
   const panel = document.getElementById('featurePanel');
-  panel.style.transform = 'translateX(100%)';
-  setTimeout(() => {
-    panel.style.display = 'none';
-  }, 300);
+  panel.classList.remove('active');
 }
 
+// Menu button event handlers
 document.querySelector('#sideMenu button:nth-child(1)').addEventListener('click', () => {
   showPanel("Change Product / Color", "<p>Color/product selector goes here.</p>");
 });
@@ -84,7 +91,7 @@ document.querySelector('#sideMenu button:nth-child(5)').addEventListener('click'
   showPanel("Change Printing Mode", "<p>Select print style or mockup.</p>");
 });
 
-
+// Optional: simulate incoming data for testing
 window.addEventListener('DOMContentLoaded', () => {
   const fakeMessage = {
     backgroundImage: "https://static.wixstatic.com/media/a0452a_f33e912885e34c1c8e578acf556c55fe~mv2.webp",

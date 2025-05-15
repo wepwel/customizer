@@ -1,6 +1,6 @@
 const canvas = new fabric.Canvas('mugCanvas');
 let backgroundImage = null;
-let nameText = null;
+let textObject = null;
 
 // Load background image onto canvas
 function loadBaseBackground(url) {
@@ -19,45 +19,6 @@ function loadBaseBackground(url) {
   );
 }
 
-// Listen for incoming messages with background and design data
-window.addEventListener('message', function (event) {
-  const data = event.data;
-  if (data && data.backgroundImage && Array.isArray(data.designs)) {
-    loadBaseBackground(data.backgroundImage);
-
-    const imageContainer = document.getElementById('image-options');
-    if (imageContainer) imageContainer.innerHTML = '';
-
-    data.designs.forEach((item, index) => {
-      const img = document.createElement('img');
-      img.src = item.img;
-      img.alt = `Design ${index + 1}`;
-      img.addEventListener('click', () => {
-        document
-          .querySelectorAll('.image-options img')
-          .forEach((i) => i.classList.remove('selected'));
-        img.classList.add('selected');
-
-        fabric.Image.fromURL(
-          item.img,
-          function (designImg) {
-            designImg.set({
-              left: item.nameX || 0,
-              top: item.nameY || 0,
-              selectable: true,
-            });
-            canvas.add(designImg);
-            canvas.bringToFront(designImg);
-          },
-          { crossOrigin: 'anonymous' }
-        );
-      });
-
-      if (imageContainer) imageContainer.appendChild(img);
-    });
-  }
-});
-
 // Show the feature panel
 function showPanel(title, contentHTML) {
   const panel = document.getElementById('featurePanel');
@@ -71,17 +32,57 @@ function showPanel(title, contentHTML) {
 
   titleElement.innerText = title;
   contentElement.innerHTML = contentHTML;
-
   panel.classList.add('active');
+
+  if (title === "Edit text") {
+    attachTextEditorEvents();
+  }
 }
 
 // Hide the feature panel
 function closePanel() {
-  const panel = document.getElementById('featurePanel');
-  panel.classList.remove('active');
+  document.getElementById('featurePanel').classList.remove('active');
 }
 
-// Attach panel open events to side menu buttons
+// Text tool logic
+function attachTextEditorEvents() {
+  const applyBtn = document.getElementById('applyTextBtn');
+  const input = document.getElementById('textInput');
+  const rotate = document.getElementById('textRotate');
+  const color = document.getElementById('textColor');
+
+  applyBtn.addEventListener('click', () => {
+    const newText = input.value;
+    if (textObject) {
+      textObject.text = newText;
+    } else {
+      textObject = new fabric.Text(newText, {
+        left: 100,
+        top: 100,
+        fontSize: 24,
+        fill: color.value,
+      });
+      canvas.add(textObject);
+    }
+    canvas.renderAll();
+  });
+
+  rotate.addEventListener('input', () => {
+    if (textObject) {
+      textObject.angle = parseInt(rotate.value);
+      canvas.renderAll();
+    }
+  });
+
+  color.addEventListener('input', () => {
+    if (textObject) {
+      textObject.set({ fill: color.value });
+      canvas.renderAll();
+    }
+  });
+}
+
+// Set up side menu button actions
 document.querySelector('#sideMenu button:nth-child(1)').addEventListener('click', () => {
   showPanel("Change Product / Color", "<p>Color/product selector goes here.</p>");
 });
@@ -91,7 +92,8 @@ document.querySelector('#sideMenu button:nth-child(2)').addEventListener('click'
 });
 
 document.querySelector('#sideMenu button:nth-child(3)').addEventListener('click', () => {
-  showPanel("Add Text", '<input type="text" placeholder="Enter text" /><button>Add</button>');
+  const template = document.getElementById('text-tool-template');
+  showPanel("Edit text", template.innerHTML);
 });
 
 document.querySelector('#sideMenu button:nth-child(4)').addEventListener('click', () => {
@@ -102,27 +104,25 @@ document.querySelector('#sideMenu button:nth-child(5)').addEventListener('click'
   showPanel("Change Printing Mode", "<p>Select print style or mockup.</p>");
 });
 
-// Setup close button event on DOM ready
+// Setup close button and simulated image load
 window.addEventListener('DOMContentLoaded', () => {
-  const closeBtn = document.getElementById('closeFeaturePanel');
-  if (closeBtn) {
-    closeBtn.addEventListener('click', closePanel);
-  }
+  document.getElementById('closeFeaturePanel').addEventListener('click', closePanel);
 
-  // Optional: simulate incoming data for testing
+  // Optional: simulate data
   const fakeMessage = {
     backgroundImage: "https://static.wixstatic.com/media/a0452a_f33e912885e34c1c8e578acf556c55fe~mv2.webp",
-    designs: [
-      {
-        _id: "d1",
-        img: "https://static.wixstatic.com/media/a0452a_a38a45364a4547bcbd18e7d97e003365~mv2.webp",
-        nameX: 270,
-        nameY: 150
-      }
-    ]
+    designs: []
   };
 
   setTimeout(() => {
     window.postMessage(fakeMessage, "*");
   }, 500);
+});
+
+// Handle message to load designs
+window.addEventListener('message', function (event) {
+  const data = event.data;
+  if (data && data.backgroundImage) {
+    loadBaseBackground(data.backgroundImage);
+  }
 });

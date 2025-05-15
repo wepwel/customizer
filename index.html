@@ -28,13 +28,73 @@
       </div>
 
       <div id="sideMenu">
-        <button>Change Product / Color</button>
-        <button>Upload Image</button>
-        <button>Add Text</button>
-        <button>Choose Design</button>
-        <button>Change Printing Mode</button>
+        <button class="icon-button icon-cp">
+          <svg><!-- Change Product SVG --></svg>
+          Change Product / Color
+        </button>
+
+        <button class="icon-button icon-ui">
+          <svg><!-- Upload Image SVG --></svg>
+          Upload Image
+        </button>
+
+        <button class="icon-button icon-at">
+          <svg
+            viewBox="0 0 32 32"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+          >
+            <path
+              d="M27 4H5a1 1 0 0 0-1 1v5a1 1 0 0 0 2 0V6h9v20a1 1 0 0 0 2 0V6h9v4a1 1 0 0 0 2 0V5a1 1 0 0 0-1-1z"
+            />
+            <path d="M19 28h-6a1 1 0 0 1 0-2h6a1 1 0 0 1 0 2z" />
+          </svg>
+          טקסט
+        </button>
+
+        <button class="icon-button icon-cd">
+          <svg
+            clip-rule="evenodd"
+            fill-rule="evenodd"
+            stroke-linejoin="round"
+            stroke-miterlimit="2"
+            viewBox="0 0 101 101"
+            xmlns="http://www.w3.org/2000/svg"
+            xmlns:serif="http://www.serif.com/"
+          >
+            <path
+              d="m7.054 29.028h-1.634c-2.165 0-3.92-1.755-3.92-3.92v-7.188c0-2.165 1.755-3.92 3.92-3.92h7.188c2.165 0 3.92 1.755 3.92 3.92v1.634h67.945v-1.634c0-2.165 1.755-3.92 3.92-3.92h7.187c2.165 0 3.92 1.755 3.92 3.92v7.188c0 2.165-1.755 3.92-3.92 3.92h-1.634v42.943h1.634c2.165 0 3.92 1.756 3.92 3.921v7.187c0 2.166-1.755 3.921-3.92 3.921l-7.187-.001c-2.165.001-3.92-1.754-3.92-3.92v-1.633l-67.945-.001v1.634c0 2.166-1.755 3.921-3.92 3.921l-7.188-.001c-2.165.001-3.92-1.754-3.92-3.92v-7.188c0-2.164 1.755-3.92 3.92-3.92h1.634v-42.943zm5.554 46.863h-7.188v7.188h7.188zm82.972 0h-7.187v7.188h7.187zm-84.606-16.733v12.813h1.634c2.165 0 3.92 1.756 3.92 3.92v1.634h52.072l-39.63-33.646zm47.048 4.245 16.634 14.122h9.817v-1.634c0-2.164 1.755-3.92 3.92-3.92h1.633v-7.203l-16.806-14.268zm26.451-39.929h-67.945v1.634c0 2.165-1.755 3.92-3.92 3.92h-1.634v24.987l15.459-13.124c1.463-1.243 3.611-1.243 5.074 0l23.487 19.94 15.689-13.32c1.463-1.242 3.611-1.242 5.074 0l14.269 12.115v-30.598h-1.633c-2.165 0-3.92-1.755-3.92-3.92zm-30.104 4.486c-5.977 0-10.83 4.853-10.83 10.83 0 5.978 4.853 10.831 10.83 10.831 5.978 0 10.831-4.853 10.831-10.831 0-5.977-4.853-10.83-10.831-10.83zm0 3.92c3.815 0 6.911 3.096 6.911 6.91s-3.096 6.911-6.911 6.911c-3.814 0-6.91-3.097-6.91-6.911s3.096-6.91 6.91-6.91zm-41.761-13.96h-7.188v7.188h7.188zm82.972 0h-7.187v7.188h7.187z"
+            />
+          </svg>
+          עיצוב
+        </button>
       </div>
     </div>
+
+    <!-- Text Editor Template -->
+    <template id="text-tool-template">
+      <textarea id="textInput"></textarea>
+      <button id="applyTextBtn" class="text-tool-btn">Edit text</button>
+
+      <div class="text-tool-controls">
+        <button>Center</button>
+        <button>Send back/forward</button>
+        <button>Align text</button>
+      </div>
+
+      <label for="textRotate">Rotate</label>
+      <input type="range" min="0" max="360" id="textRotate" />
+
+      <label for="textColor">Change color</label>
+      <input type="color" id="textColor" value="#000000" />
+
+      <label for="fontEffect">Change Font Effect</label>
+      <select id="fontEffect">
+        <option>Normal</option>
+        <option>Shadow</option>
+        <option>Outline</option>
+      </select>
+    </template>
 
     <script src="script.js"></script>
   </body>

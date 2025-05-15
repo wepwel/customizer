@@ -27,14 +27,15 @@ html, body {
   width: 300px;
   height: 100%;
   background: rgb(8, 47, 224);
-  display: none; /* fully hidden on load */
+  display: none;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   z-index: 2;
   color: white;
   position: relative;
   animation: slideIn 0.3s ease forwards;
+  overflow-y: auto;
 }
 
 #featurePanel.active {
@@ -95,4 +96,59 @@ html, body {
   font-size: 24px;
   cursor: pointer;
   color: white;
+}
+
+#panelContent {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+}
+
+#panelContent textarea,
+#panelContent input,
+#panelContent select {
+  width: 100%;
+  margin-bottom: 10px;
+  box-sizing: border-box;
+}
+
+#panelContent label {
+  display: block;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.text-tool-btn {
+  background: #007bff;
+  color: white;
+  padding: 10px;
+  border: none;
+  font-weight: bold;
+}
+
+.text-tool-controls {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  margin-bottom: 10px;
+}
+
+.icon-button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 12px;
+  background: white;
+  border: none;
+  cursor: pointer;
+  height: auto;          /* ✅ Allow height to grow */
+  min-height: 100px;     /* ✅ Ensure enough space for icon + text */
+}
+
+.icon-button svg {
+  width: 20px;
+  height: 20px;
+  fill: currentColor;
 }

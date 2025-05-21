@@ -26,13 +26,13 @@ html, body {
 #featurePanel {
   width: 300px;
   height: 100%;
-  background: #F6F6F6;
+  background: #F1F3F4;
   display: none;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   z-index: 2;
-  color: white;
+  color: #5B6C7A;
   position: relative;
   animation: slideIn 0.3s ease forwards;
   overflow-y: auto;
@@ -61,7 +61,7 @@ html, body {
   align-items: stretch;
   box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 3;
-  border-top-left-radius: 10px;
+  border-bottom-right-radius: 10px;
   border-bottom-left-radius: 10px;
 }
 
@@ -93,7 +93,7 @@ html, body {
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  color: white;
+  color: #5B6C7A;
   font-weight: bold;
 }
 
@@ -102,7 +102,7 @@ html, body {
   border: none;
   font-size: 24px;
   cursor: pointer;
-  color: white;
+  color: #5B6C7A;
 }
 
 #panelContent {

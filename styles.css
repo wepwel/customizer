@@ -54,21 +54,23 @@ html, body {
 
 #sideMenu {
   width: 120px;
-  background: black;
+  background: #5B6C7A;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: stretch;
   box-shadow: -4px 0 10px rgba(0, 0, 0, 0.1);
   z-index: 3;
+  border-top-left-radius: 10px;
+  border-bottom-left-radius: 10px;
 }
 
 #sideMenu button {
   width: 100%;
   height: auto;
   padding: 12px;
-  background: black;         /* match sidebar */
-  color: white;                /* white text */
+  background: #5B6C7A;      /* match sidebar */
+  color: #F5F3F1;                /* white text */
   border: none;
   font-size: 14px;
   font-weight: 600;
@@ -78,11 +80,11 @@ html, body {
   flex-direction: column;
   align-items: center;
   gap: 6px;
-  border-bottom: 1px solid white; /* subtle separator */
+  border-bottom: 1px solid #5B6C7A; /* subtle separator */
 }
 
 #sideMenu button:hover {
-  background: #e6f0ff;
+  background: #F5F3F1;
 }
 
 .panel-header {

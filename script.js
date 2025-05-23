@@ -1,6 +1,8 @@
 const canvas = new fabric.Canvas("mugCanvas");
 let backgroundImage = null;
 let textObject = null;
+let selectedFont = "Open Sans";
+let selectedColor = "#000000";
 
 function loadBaseBackground(url) {
   fabric.Image.fromURL(
@@ -47,16 +49,6 @@ function closePanel() {
 function attachTextEditorEvents() {
   const applyBtn = document.getElementById("applyTextBtn");
   const input = document.getElementById("textInput");
-  const fontSizeInput = document.getElementById("fontSizeInput");
-  const boldBtn = document.getElementById("boldToggle");
-  const italicBtn = document.getElementById("italicToggle");
-
-  // Fix the textarea size
-  if (input) {
-    input.style.resize = "none";
-    input.style.height = "60px";
-    input.style.overflow = "hidden";
-  }
 
   applyBtn?.addEventListener("click", () => {
     const newText = input.value;
@@ -66,37 +58,14 @@ function attachTextEditorEvents() {
       textObject = new fabric.Text(newText, {
         left: 100,
         top: 100,
-        fontSize: parseInt(fontSizeInput.value) || 24,
-        fill: "#000",
-        fontFamily: "Arial",
+        fontSize: 36,
+        fill: selectedColor,
+        fontFamily: selectedFont,
       });
       canvas.add(textObject);
     }
     canvas.setActiveObject(textObject);
     canvas.renderAll();
-  });
-
-  fontSizeInput?.addEventListener("input", () => {
-    if (textObject) {
-      textObject.set({ fontSize: parseInt(fontSizeInput.value) });
-      canvas.renderAll();
-    }
-  });
-
-  boldBtn?.addEventListener("click", () => {
-    if (textObject) {
-      const current = textObject.fontWeight;
-      textObject.set({ fontWeight: current === "bold" ? "normal" : "bold" });
-      canvas.renderAll();
-    }
-  });
-
-  italicBtn?.addEventListener("click", () => {
-    if (textObject) {
-      const current = textObject.fontStyle;
-      textObject.set({ fontStyle: current === "italic" ? "normal" : "italic" });
-      canvas.renderAll();
-    }
   });
 
   document.getElementById("colorSetting")?.addEventListener("click", () => {
@@ -121,7 +90,7 @@ function attachColorGridEvents() {
   ];
 
   const panelContent = document.getElementById("panelContent");
-  panelContent.innerHTML = ""; // Clear old content
+  panelContent.innerHTML = "";
 
   const backButton = document.createElement("button");
   backButton.textContent = "← Back";
@@ -129,6 +98,7 @@ function attachColorGridEvents() {
   backButton.addEventListener("click", () => {
     const template = document.getElementById("text-tool-template");
     showPanel("Edit text", template.innerHTML);
+    setTimeout(() => attachTextEditorEvents(), 50);
   });
 
   panelContent.appendChild(backButton);
@@ -140,23 +110,14 @@ function attachColorGridEvents() {
     swatch.dataset.color = color;
 
     swatch.addEventListener("click", () => {
-      document.querySelectorAll(".color-swatch").forEach(el => el.classList.remove("selected"));
-      swatch.classList.add("selected");
-
-      const preview = document.getElementById("colorPreview");
-      const name = document.getElementById("colorName");
-
-      if (preview && name) {
-        preview.style.backgroundColor = color;
-        name.textContent = color;
-      }
-
+      selectedColor = color;
       if (textObject) {
         textObject.set({ fill: color });
         canvas.renderAll();
-      } else {
-        alert("Please add text first.");
       }
+      const template = document.getElementById("text-tool-template");
+      showPanel("Edit text", template.innerHTML);
+      setTimeout(() => attachTextEditorEvents(), 50);
     });
 
     colorGrid.appendChild(swatch);
@@ -189,12 +150,14 @@ function attachFontPickerEvents() {
     btn.style.cursor = "pointer";
 
     btn.addEventListener("click", () => {
+      selectedFont = font;
       if (textObject) {
         textObject.set({ fontFamily: font });
         canvas.renderAll();
       }
       const template = document.getElementById("text-tool-template");
       showPanel("Edit text", template.innerHTML);
+      setTimeout(() => attachTextEditorEvents(), 50);
     });
 
     list.appendChild(btn);
@@ -209,6 +172,7 @@ function attachFontPickerEvents() {
   backButton.addEventListener("click", () => {
     const template = document.getElementById("text-tool-template");
     showPanel("Edit text", template.innerHTML);
+    setTimeout(() => attachTextEditorEvents(), 50);
   });
 
   panelContent.appendChild(backButton);
@@ -221,12 +185,13 @@ sideMenuButtons[1].addEventListener("click", () => showPanel("Upload Image", "<p
 sideMenuButtons[2].addEventListener("click", () => {
   const template = document.getElementById("text-tool-template");
   showPanel("Edit text", template.innerHTML);
+  setTimeout(() => attachTextEditorEvents(), 50);
 });
 sideMenuButtons[3].addEventListener("click", () => showPanel("Choose Design", "<p>Coming soon</p>"));
 
 document.getElementById("closeFeaturePanel").addEventListener("click", closePanel);
 
-/*window.addEventListener("DOMContentLoaded", () => {
+window.addEventListener("DOMContentLoaded", () => {
   const fakeMessage = {
     backgroundImage: "https://static.wixstatic.com/media/a0452a_f33e912885e34c1c8e578acf556c55fe~mv2.webp",
   };
@@ -240,4 +205,4 @@ window.addEventListener("message", (event) => {
   if (data && data.backgroundImage) {
     loadBaseBackground(data.backgroundImage);
   }
-});*/
+});
